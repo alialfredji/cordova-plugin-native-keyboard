@@ -24,9 +24,9 @@ int maxlength;
                                            selector:@selector(keyboardWillShow:)
                                                name:UIKeyboardWillShowNotification object:nil];
 
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(shrinkViewKeyboardWillChangeFrame:)
-                                               name:UIKeyboardWillChangeFrameNotification object:nil];
+  // [[NSNotificationCenter defaultCenter] addObserver:self
+  //                                          selector:@selector(shrinkViewKeyboardWillChangeFrame:)
+  //                                              name:UIKeyboardWillChangeFrameNotification object:nil];
 
   // for the textField
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -78,40 +78,40 @@ int maxlength;
   }
 }
 
-- (void)shrinkViewKeyboardWillChangeFrame:(NSNotification*)notif
-{
-    if (NSFoundationVersionNumber < NSFoundationVersionNumber_iOS_7_1 && NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
-        return;
-    }
+// - (void)shrinkViewKeyboardWillChangeFrame:(NSNotification*)notif
+// {
+//     if (NSFoundationVersionNumber < NSFoundationVersionNumber_iOS_7_1 && NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+//         return;
+//     }
 
-    if (!(self.viewController.isViewLoaded && self.viewController.view.window)) {
-        return;
-    }
+//     if (!(self.viewController.isViewLoaded && self.viewController.view.window)) {
+//         return;
+//     }
 
-    self.webView.scrollView.scrollEnabled = YES;
+//     self.webView.scrollView.scrollEnabled = YES;
 
-    CGRect screen = [[UIScreen mainScreen] bounds];
-    CGRect keyboard = ((NSValue*)notif.userInfo[@"UIKeyboardFrameEndUserInfoKey"]).CGRectValue;
+//     CGRect screen = [[UIScreen mainScreen] bounds];
+//     CGRect keyboard = ((NSValue*)notif.userInfo[@"UIKeyboardFrameEndUserInfoKey"]).CGRectValue;
 
-    keyboard = [self.webView convertRect:keyboard fromView:nil];
-    screen = [self.webView convertRect:screen fromView:nil];
+//     keyboard = [self.webView convertRect:keyboard fromView:nil];
+//     screen = [self.webView convertRect:screen fromView:nil];
 
 
 
-    CGRect keyboardIntersection = CGRectIntersection(screen, keyboard);
-    if (CGRectContainsRect(screen, keyboardIntersection) && !CGRectIsEmpty(keyboardIntersection)) {
-        screen.size.height -= keyboardIntersection.size.height;
-        if (@available(iOS 12, *)) {
-            self.webView.scrollView.contentSize = CGSizeMake(self.webView.scrollView.frame.size.width, self.webView.scrollView.frame.size.height - keyboard.size.height);
-        }
-    } else {
-        if (@available(iOS 12, *)) {
-            self.webView.scrollView.contentSize = CGSizeMake(self.webView.frame.size.width, self.webView.frame.size.height - keyboard.size.height);
-        }
-    }
+//     CGRect keyboardIntersection = CGRectIntersection(screen, keyboard);
+//     if (CGRectContainsRect(screen, keyboardIntersection) && !CGRectIsEmpty(keyboardIntersection)) {
+//         screen.size.height -= keyboardIntersection.size.height;
+//         if (@available(iOS 12, *)) {
+//             self.webView.scrollView.contentSize = CGSizeMake(self.webView.scrollView.frame.size.width, self.webView.scrollView.frame.size.height - keyboard.size.height);
+//         }
+//     } else {
+//         if (@available(iOS 12, *)) {
+//             self.webView.scrollView.contentSize = CGSizeMake(self.webView.frame.size.width, self.webView.frame.size.height - keyboard.size.height);
+//         }
+//     }
 
-    self.webView.frame = [self.webView.superview convertRect:screen fromView:self.webView];
-}
+//     self.webView.frame = [self.webView.superview convertRect:screen fromView:self.webView];
+// }
 
 - (void)showMessenger:(CDVInvokedUrlCommand*)command {
   if (![NativeKeyboardHelper allowFeature:NKFeatureMessenger]) {
